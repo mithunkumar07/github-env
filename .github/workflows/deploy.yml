@@ -49,7 +49,7 @@ jobs:
         # uses: actions/download-artifact@v3
         # with:
         #   name: env_json
-      - run: |
+        run: |
           ls -la
           sh script.sh env.json >> .env
 
