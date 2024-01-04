@@ -1,0 +1,34 @@
+name: Env generation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  extract: 
+    name: extract env 
+    runs-on: ubuntu-latest 
+    environment: dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Extract json envfile
+        run: |
+          echo "$ALLMYSECRETS" >> env.json
+        env:
+          ALLMYSECRETS: ${{ toJSON(secrets) }}
+          ALLMYVARS: ${{ toJSON(vars) }}
+          
+      - name: Extract env from json
+        run: |
+          ls -la
+          sh script.sh env.json >> .env
+
+      - name: Upload .envtest as an artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: env
+          path: .env
