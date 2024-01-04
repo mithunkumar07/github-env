@@ -1,4 +1,4 @@
-name: Env generation
+name: Env generation without artifacts
 
 on:
   push:
