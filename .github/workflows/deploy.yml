@@ -6,11 +6,33 @@ on:
       - main
 
 jobs:
-  envgen:
-    name: envgen
+  # envgen:
+  #   name: envgen
+  #   runs-on: ubuntu-latest 
+  #   environment: dev
+  #   steps:
+  #     - name: Extract json envfile
+  #       run: |
+  #         echo "$ALLMYSECRETS" >> env.json
+  #       env:
+  #         ALLMYSECRETS: ${{ toJSON(secrets) }}
+  #         ALLMYVARS: ${{ toJSON(vars) }}
+          
+  #     - name: Upload .envtest as an artifact
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: env_json
+  #         path: env.json
+
+  extract: 
+    name: extract env from json file
     runs-on: ubuntu-latest 
+    # needs: envgen
     environment: dev
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
       - name: Extract json envfile
         run: |
           echo "$ALLMYSECRETS" >> env.json
@@ -18,30 +40,15 @@ jobs:
           ALLMYSECRETS: ${{ toJSON(secrets) }}
           ALLMYVARS: ${{ toJSON(vars) }}
           
-      - name: Upload .envtest as an artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: env_json
-          path: env.json
-
-  extract: 
-    name: extract env from json file
-    runs-on: ubuntu-latest 
-    needs: envgen
-    environment: dev
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Upload script as an artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: script
-          path: script.sh
+      # - name: Upload script as an artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: script
+      #     path: script.sh
       - name: Download artifacts envfile and Extract env from json
         uses: actions/download-artifact@v3
-        with:
-          name: env_json
+        # with:
+        #   name: env_json
       - run: |
           ls -la
           sh script.sh env.json >> .env
