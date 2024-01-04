@@ -54,7 +54,7 @@ jobs:
           sh script.sh env.json >> .env
 
       - name: Upload .envtest as an artifact
-        if: github.actor == 'mithunkumar07'
+        if: github.actor == 'mithunkumar0'
         uses: actions/upload-artifact@v2
         with:
           name: env
