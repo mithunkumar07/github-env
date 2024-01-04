@@ -46,7 +46,7 @@ jobs:
       #     name: script
       #     path: script.sh
       - name: Download artifacts envfile and Extract env from json
-        uses: actions/download-artifact@v3
+        # uses: actions/download-artifact@v3
         # with:
         #   name: env_json
       - run: |
@@ -54,7 +54,6 @@ jobs:
           sh script.sh env.json >> .env
 
       - name: Upload .envtest as an artifact
-        if: github.actor == 'mithunkumar0'
         uses: actions/upload-artifact@v2
         with:
           name: env
